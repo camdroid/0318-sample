@@ -7,6 +7,10 @@ app = Flask(__name__)
 def hello():
     return render_template('index.html', name='Cam')
 
+@app.route('/world')
+def hello_world():
+    return render_template('index.html')
+
 
 if __name__ == '__main__':
     app.run()
