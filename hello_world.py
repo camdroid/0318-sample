@@ -12,5 +12,9 @@ def hello_world():
     return render_template('index.html')
 
 
+@app.route('/<username>')
+def hello_user(username):
+    return render_template('index.html', name=username)
+
 if __name__ == '__main__':
     app.run()
