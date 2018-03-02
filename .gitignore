@@ -1,3 +1,5 @@
 env/
 tags
 .*.sw*
+app.db
+__pycache__/
