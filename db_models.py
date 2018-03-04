@@ -1,5 +1,7 @@
 from flask import Flask
 from flask import render_template
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, TextAreaField
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 
@@ -18,11 +20,17 @@ def get_recipes():
         return "no recipes found!"
 
 
-@app.route('/add_user/<uname>')
-def add_user(uname):
-    db.session.add(User(username=uname))
+@app.route('/add_recipe/', methods=['GET'])
+def show_recipe_form():
+    recipe_form = RecipeForm()
+    return render_template('recipe_form.html', form=recipe_form)
+
+
+@app.route('/add_recipe', methods=['POST'])
+def add_recipe():
+    import pdb; pdb.set_trace()
+
     db.session.commit()
-    return 'Succesfully added user ' + uname
 
 
 @app.route('/')
@@ -30,21 +38,26 @@ def home():
     return "Welcome to my Recipe Site!"
 
 
+class RecipeForm(FlaskForm):
+    title = StringField('Title')
+    ingredients = TextAreaField('Ingredients')
+    instructions = TextAreaField('Instructions')
+    submit = SubmitField('Submit')
+
+
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64))
     ingredients = db.Column(db.String(256))
     instructions = db.Column(db.String(512))
-    ingredients_list = []
 
-    def set_title(self, t):
-        self.title = t
+    def __init__(self, title=None, ingredients=None, instructions=None):
+        self.title = title
+        self.ingredients = ingredients
+        self.instructions = instructions
 
-    def set_ingredient(ingredient, quantity):
-        # This could look something like {"chicken breasts": "1 lb"}
-        ingredient_d = {ingredient: quantity}
-        self.ingredients_list.append(ingredient_d)
-        self.ingredients = json.dump(self.ingredients_list)
+    def add_ingredient(self, ingredient):
+        self.ingredients += ingredient
 
 
 db.create_all()
