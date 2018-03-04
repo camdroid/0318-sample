@@ -1,11 +1,8 @@
-from flask import Flask
-from flask import render_template
-from flask import redirect
-from flask import url_for
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField
+from flask import Flask, render_template, redirect, url_for
+from helpers import RecipeForm
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -44,13 +41,6 @@ def add_recipe():
 @app.route('/')
 def home():
     return "Welcome to my Recipe Site!"
-
-
-class RecipeForm(FlaskForm):
-    title = StringField('Title')
-    ingredients = TextAreaField('Ingredients')
-    instructions = TextAreaField('Instructions')
-    submit = SubmitField('Submit')
 
 
 class Recipe(db.Model):
