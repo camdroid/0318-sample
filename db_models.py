@@ -1,5 +1,7 @@
 from flask import Flask
 from flask import render_template
+from flask import redirect
+from flask import url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
 from config import Config
@@ -11,7 +13,7 @@ db = SQLAlchemy(app)
 
 
 @app.route('/get_recipes')
-def get_recipes():
+def show_recipes():
     recipes = Recipe.query.all()
     print(recipes)
     if recipes:
@@ -28,9 +30,15 @@ def show_recipe_form():
 
 @app.route('/add_recipe', methods=['POST'])
 def add_recipe():
-    import pdb; pdb.set_trace()
-
+    form = RecipeForm()
+    new_recipe = Recipe(
+        title=form.title.data,
+        ingredients=form.ingredients.data,
+        instructions=form.instructions.data
+    )
+    db.session.add(new_recipe)
     db.session.commit()
+    return redirect(url_for('show_recipes'))
 
 
 @app.route('/')
