@@ -7,14 +7,15 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 
-@app.route('/get_users')
-def get_users():
-    users = User.query.all()
-    print(users)
-    if users:
-        return render_template('list_users.html', users=users)
+
+@app.route('/get_recipes')
+def get_recipes():
+    recipes = Recipe.query.all()
+    print(recipes)
+    if recipes:
+        return render_template('list_recipes.html', recipes=recipes)
     else:
-        return "no users found!"
+        return "no recipes found!"
 
 
 @app.route('/add_user/<uname>')
@@ -24,12 +25,26 @@ def add_user(uname):
     return 'Succesfully added user ' + uname
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64))
+@app.route('/')
+def home():
+    return "Welcome to my Recipe Site!"
 
-    def __repr__(self):
-        return self.username
+
+class Recipe(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(64))
+    ingredients = db.Column(db.String(256))
+    instructions = db.Column(db.String(512))
+    ingredients_list = []
+
+    def set_title(self, t):
+        self.title = t
+
+    def set_ingredient(ingredient, quantity):
+        # This could look something like {"chicken breasts": "1 lb"}
+        ingredient_d = {ingredient: quantity}
+        self.ingredients_list.append(ingredient_d)
+        self.ingredients = json.dump(self.ingredients_list)
 
 
 db.create_all()
