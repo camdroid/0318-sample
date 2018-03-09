@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # To run this file, enter "source setup.sh" on your terminal
 
 python3 -m venv env/
