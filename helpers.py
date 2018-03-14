@@ -9,3 +9,6 @@ class RecipeForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+class SearchForm(FlaskForm):
+    ingredients = TextAreaField('Ingredients')
+    submit = SubmitField('Search')
