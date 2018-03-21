@@ -27,5 +27,16 @@ def show_recipe_form():
     return render_template('recipe_form.html', form=recipe_form)
 
 
+@app.route('/add_recipe', methods=['POST'])
+def show_recipe():
+    recipe_form = RecipeForm()
+    new_recipe = Recipe(
+        title=form.title.data,
+        ingredients=form.ingredients.data,
+        instructions=form.instructions.data
+    )
+    return render_template('list_recipes.html', recipes=[new_recipe])
+
+
 if __name__ == '__main__':
     app.run(debug=True)
