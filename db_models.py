@@ -18,6 +18,15 @@ def show_recipes():
     else:
         return "no recipes found!"
 
+@app.route('/get_recipes/<ingredient>')
+def show_recipes_with_ingredient(ingredient=None):
+    # recipes = Recipe.query.filter_by(ingredients=ingredient).all()
+    recipes = Recipe.query.filter(Recipe.ingredients.contains(ingredient)).all()
+    if recipes:
+        return render_template('list_recipes.html', recipes=recipes)
+    else:
+        return "no recipes found!"
+
 
 @app.route('/add_recipe/', methods=['GET'])
 def show_recipe_form():
@@ -61,4 +70,4 @@ class Recipe(db.Model):
 db.create_all()
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
