@@ -3,3 +3,4 @@ tags
 .*.sw*
 app.db
 __pycache__/
+secrets.py
